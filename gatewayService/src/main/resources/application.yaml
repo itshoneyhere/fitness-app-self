@@ -14,6 +14,10 @@ spring:
               uri: http://localhost:8082
               predicates:
                 - Path=/api/users/**
+            - id: activityService
+              uri: http://localhost:8087
+              predicates:
+                - Path=/api/activities/**
 
   security:
     oauth2:

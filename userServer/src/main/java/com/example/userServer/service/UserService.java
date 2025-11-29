@@ -31,8 +31,10 @@ public class UserService {
         return  usersRepo.findAll(pageable);
     }
 
-    public ResponseUsers createOneUser(RequestUser requestUser){
-        return Mapper.entityToResponse(usersRepo.save(Mapper.requestToEntity(requestUser)));
+    public ResponseUsers createOneUser(String userId,RequestUser requestUser){
+        Users users = Mapper.requestToEntity(requestUser);
+        users.setUserId(userId);
+        return Mapper.entityToResponse(usersRepo.save(users));
     }
 
 
