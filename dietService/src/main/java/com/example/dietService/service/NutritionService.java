@@ -24,44 +24,34 @@ public class NutritionService {
 
     public MacrosOfDayDto getMacrosToday(String userId) {
 
-//        LocalDate now = LocalDate.now();
-//        LocalDateTime todayStart  = now.atStartOfDay().minusDays(1);
-//        LocalDateTime todayEnd  = todayStart.plusDays(1);
-
-        LocalDate utcDate = LocalDate.now(ZoneOffset.UTC);
-
-        LocalDateTime todayStart = utcDate.atStartOfDay(ZoneOffset.UTC).toLocalDateTime();
-
-        LocalDateTime todayEnd= todayStart.plusDays(1);
+        LocalDate now = LocalDate.now();
+        LocalDateTime todayStart  = now.atStartOfDay();
+        LocalDateTime todayEnd  = todayStart.plusDays(1);
 
         List<UserDiet> userDiets = userDietRepo.findByUserIdAndCreatedAtBetween(userId,todayStart,todayEnd);
 
         return sumMacros(userDiets);
     }
 
-    public NutritionSummary searchAndAddFood(String userId, String foodName, String quantity) {
-        //search for food in db
+    public UserDiet getLatestMacro(String userId)
+    {
+        return userDietRepo.findFirstByUserIdOrderByCreatedAtDesc(userId);
+    }
 
+    public UserDiet searchAndAddFood(String userId, String foodName, String quantity) {
+        //search for food in db
         NutritionSummary nutritionSummary =  nutritionRepo.findFirstByFoodNameIgnoreCase(foodName) ;
 
         if(nutritionSummary != null)
         {
-            return nutritionSummary;
+            return userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
         }
-
         //if not available ask ai
-         //add to db
-
         NutritionSummary nutritionSummaryFromAi = Mapper.toNutritionSummaryEntity(aiService.getNutritionalDataFromAi(foodName,quantity).orElseThrow(() -> new RuntimeException("Exception: Failed to fetch nutrition from ai")));
 
-
+        //save nutrition summary
         //add food to user diet
-        userDietRepo.save(Mapper.toUserDiet(nutritionSummaryFromAi,userId));
-
-
-
-        //return macros for it
-        return nutritionRepo.save(nutritionSummaryFromAi);
+        return userDietRepo.save(Mapper.toUserDiet(nutritionRepo.save(nutritionSummaryFromAi),userId));
 
     }
 

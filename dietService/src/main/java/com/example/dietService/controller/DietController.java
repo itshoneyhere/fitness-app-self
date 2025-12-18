@@ -24,10 +24,16 @@ public class DietController {
         return ResponseEntity.ok( nutritionService.searchAndAddFood(userId,addFoodRequestDto.getFoodName(),addFoodRequestDto.getQuantity()));
     }
 
-    @GetMapping("/users/macros/today")
-    public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
-        String userId = jwt.getSubject();
+//    @GetMapping("/users/macros/today")
+//    public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
+//        String userId = jwt.getSubject();
+//
+//        return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
+//    }
+@GetMapping("/users/macros/today")
+public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
+    String userId = jwt.getSubject();
 
-        return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
-    }
+    return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
+}
 }
