@@ -12,4 +12,5 @@ public interface UserDietRepo extends JpaRepository<UserDiet,Long> {
 
     List<UserDiet> findByUserIdAndCreatedAtBetween(String userId, LocalDateTime start, LocalDateTime end);
 
+    UserDiet findFirstByUserIdOrderByCreatedAtDesc(String userId);
 }
