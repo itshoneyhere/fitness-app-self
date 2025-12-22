@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MacrosOfDayDto {
 
-    public int calories;
-    public int proteinG;
-    public int carbsG;
-    public int fatG;
-    public int fiberG;
-    public int sugarG;
+    public Long calorie;
+    public Long protein;
+    public Long carb;
+    public Long fat;
+    public Long fiber;
+    public Long sugar;
 }

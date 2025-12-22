@@ -31,4 +31,8 @@ spring:
 server:
   port: 8088
 
+gemini:
+  api:
+    key: ${gemini_api_key}
+
 

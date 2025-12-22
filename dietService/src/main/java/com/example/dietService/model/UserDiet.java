@@ -27,12 +27,14 @@ public class UserDiet {
 
     private Long foodId;
 
-    private int calories;
-    private int proteinG;
-    private int carbsG;
-    private int fatG;
-    private int fiberG;
-    private int sugarG;
+    private Integer quantityG;
+
+    private Integer calorie;
+    private Integer protein;
+    private Integer carb;
+    private Integer fat;
+    private Integer fiber;
+    private Integer sugar;
 
     @CreatedDate
     private LocalDateTime createdAt;

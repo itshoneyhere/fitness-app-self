@@ -19,13 +19,12 @@ public class Mapper {
                 .foodName(dto.getFood_name())
                 .inputQuery(dto.getInput_query())
                 .quantityG(s != null ? s.value : null)
-
-                .calories(m != null ? m.calories : null)
-                .proteinG(m != null ? m.protein_g : null)
-                .carbsG(m != null ? m.carbs_g : null)
-                .fatG(m != null ? m.fat_g : null)
-                .fiberG(m != null ? m.fiber_g : null)
-                .sugarG(m != null ? m.sugar_g : null)
+                .calorie(m != null ? m.calories : null)
+                .protein(m != null ? m.protein_g : null)
+                .carb(m != null ? m.carbs_g : null)
+                .fat(m != null ? m.fat_g : null)
+                .fiber(m != null ? m.fiber_g : null)
+                .sugar(m != null ? m.sugar_g : null)
 
                 .build();
     }
@@ -38,13 +37,14 @@ public class Mapper {
 
         return UserDiet.builder()
                 .userId(userId)                     // provided externally
-                .foodId(ns.getId())                     // provided externally
-                .calories(ns.getCalories())
-                .proteinG(ns.getProteinG())
-                .carbsG(ns.getCarbsG())
-                .fatG(ns.getFatG())
-                .fiberG(ns.getFiberG())
-                .sugarG(ns.getSugarG())
+                .foodId(ns.getId())
+                .quantityG(ns.getQuantityG())// provided externally
+                .calorie(ns.getCalorie())
+                .protein(ns.getProtein())
+                .carb(ns.getCarb())
+                .fat(ns.getFat())
+                .fiber(ns.getFiber())
+                .sugar(ns.getSugar())
                 .build();
     }
 

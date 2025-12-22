@@ -21,7 +21,13 @@ public class DietController {
                                           @AuthenticationPrincipal Jwt jwt)
     {
         String userId = jwt.getSubject();
-        return ResponseEntity.ok( nutritionService.searchAndAddFood(userId,addFoodRequestDto.getFoodName(),addFoodRequestDto.getQuantity()));
+
+        Integer quant  = Integer.parseInt( addFoodRequestDto.getQuantity());
+
+        return ResponseEntity.ok( nutritionService.searchAndAddFood(userId,
+                addFoodRequestDto.getFoodName().toLowerCase(),
+                quant
+                ));
     }
 
     @GetMapping("/users/macros/today")
