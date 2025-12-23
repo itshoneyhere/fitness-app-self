@@ -28,41 +28,36 @@ public class NutritionService {
         LocalDateTime todayStart  = now.atStartOfDay();
         LocalDateTime todayEnd  = todayStart.plusDays(1);
 
-        List<UserDiet> userDiets = userDietRepo.findByUserIdAndCreatedAtBetween(userId,todayStart,todayEnd);
-
-        return sumMacros(userDiets);
+        return sumMacros(userId,todayStart,todayEnd);
     }
 
-    public UserDiet getLatestMacro(String userId)
-    {
-        return userDietRepo.findFirstByUserIdOrderByCreatedAtDesc(userId);
-    }
-
-    public UserDiet searchAndAddFood(String userId, String foodName, String quantity) {
+    public MacrosOfDayDto searchAndAddFood(String userId, String foodName, Integer quantity) {
+        
         //search for food in db
         NutritionSummary nutritionSummary =  nutritionRepo.findFirstByFoodNameIgnoreCase(foodName) ;
 
         if(nutritionSummary != null)
         {
-            return userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
+            userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
+            return getMacrosToday(userId);
         }
         //if not available ask ai
+         //add to db
         NutritionSummary nutritionSummaryFromAi = Mapper.toNutritionSummaryEntity(aiService.getNutritionalDataFromAi(foodName,quantity).orElseThrow(() -> new RuntimeException("Exception: Failed to fetch nutrition from ai")));
 
-        //save nutrition summary
         //add food to user diet
-        return userDietRepo.save(Mapper.toUserDiet(nutritionRepo.save(nutritionSummaryFromAi),userId));
+        userDietRepo.save(Mapper.toUserDiet(nutritionSummaryFromAi,userId));
+
+        //save macros in nutrition summary
+        nutritionRepo.save(nutritionSummaryFromAi);
+
+        return getMacrosToday(userId);
 
     }
 
-    public MacrosOfDayDto sumMacros(List<UserDiet> diets) {
-        int calories = diets.stream().mapToInt(UserDiet::getCalories).sum();
-        int proteinG = diets.stream().mapToInt(UserDiet::getProteinG).sum();
-        int carbsG   = diets.stream().mapToInt(UserDiet::getCarbsG).sum();
-        int fatG     = diets.stream().mapToInt(UserDiet::getFatG).sum();
-        int fiberG   = diets.stream().mapToInt(UserDiet::getFiberG).sum();
-        int sugarG   = diets.stream().mapToInt(UserDiet::getSugarG).sum();
+    public MacrosOfDayDto sumMacros(String userId,LocalDateTime start,LocalDateTime end) {
 
-        return new MacrosOfDayDto(calories, proteinG, carbsG, fatG, fiberG, sugarG);
+        return userDietRepo.calculateDailyTotal(userId,start,end);
+
     }
 }

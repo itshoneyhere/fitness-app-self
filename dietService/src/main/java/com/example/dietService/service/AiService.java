@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.genai.Client;
 import com.google.genai.types.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,9 +17,12 @@ import java.util.Optional;
 @Service
 public class AiService {
 
-    public Optional<AiResponseDto> getNutritionalDataFromAi(String food,String quantity)
+    @Value("${gemini.api.key}")
+    private String apiKey;
+
+    public Optional<AiResponseDto> getNutritionalDataFromAi(String food,Integer quantity)
     {
-        Client client = Client.builder().apiKey("AIzaSyDO4ZxcWAHkvNENPnbUKrOqwK9Uibucti8").build();
+        Client client = Client.builder().apiKey(apiKey).build();
         Schema servingSizeSchema = Schema.builder()
                 .type(Type.Known.OBJECT)
                 .properties(Map.of(

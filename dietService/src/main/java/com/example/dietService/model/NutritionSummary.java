@@ -29,12 +29,12 @@ public class NutritionSummary {
 
     private Integer quantityG;
 
-    private Integer calories;
-    private Integer proteinG;
-    private Integer carbsG;
-    private Integer fatG;
-    private Integer fiberG;
-    private Integer sugarG;
+    private Integer calorie;
+    private Integer protein;
+    private Integer carb;
+    private Integer fat;
+    private Integer fiber;
+    private Integer sugar;
 
     @CreatedDate
     private LocalDateTime createdAt;
