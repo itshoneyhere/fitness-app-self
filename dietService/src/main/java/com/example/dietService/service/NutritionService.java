@@ -3,7 +3,6 @@ package com.example.dietService.service;
 import com.example.dietService.dto.MacrosOfDayDto;
 import com.example.dietService.mapper.Mapper;
 import com.example.dietService.model.NutritionSummary;
-import com.example.dietService.model.UserDiet;
 import com.example.dietService.repo.NutritionSummaryRepo;
 import com.example.dietService.repo.UserDietRepo;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -41,7 +38,7 @@ public class NutritionService {
             userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
             return getMacrosToday(userId);
         }
-        //if not available ask ai
+        //if not available ask Ai
          //add to db
         NutritionSummary nutritionSummaryFromAi = Mapper.toNutritionSummaryEntity(aiService.getNutritionalDataFromAi(foodName,quantity).orElseThrow(() -> new RuntimeException("Exception: Failed to fetch nutrition from ai")));
 

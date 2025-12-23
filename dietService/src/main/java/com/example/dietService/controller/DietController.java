@@ -1,6 +1,7 @@
 package com.example.dietService.controller;
 
 import com.example.dietService.dto.AddFoodRequestDto;
+import com.example.dietService.service.ActivityClient;
 import com.example.dietService.service.NutritionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class DietController {
 
     private final NutritionService nutritionService;
+    private final ActivityClient activityClient;
 
     @PostMapping("/users/add/food")
     public ResponseEntity<?> addUsersMeal(@RequestBody @Valid AddFoodRequestDto addFoodRequestDto,
@@ -30,16 +32,18 @@ public class DietController {
                 ));
     }
 
-//    @GetMapping("/users/macros/today")
-//    public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
-//        String userId = jwt.getSubject();
-//
-//        return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
-//    }
+
 @GetMapping("/users/macros/today")
 public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
     String userId = jwt.getSubject();
 
     return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
 }
+
+@GetMapping("/test/testSyncComm")
+    public ResponseEntity<?> testSyncCommWebClient(@AuthenticationPrincipal Jwt jwt)
+{
+return ResponseEntity.ok( activityClient.getLatestActivity(jwt.getTokenValue()));
+}
+
 }
