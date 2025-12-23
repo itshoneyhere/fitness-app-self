@@ -24,16 +24,16 @@ public class NutritionService {
 
     public MacrosOfDayDto getMacrosToday(String userId) {
 
-        LocalDate utcDate = LocalDate.now(ZoneOffset.UTC);
-        LocalDateTime todayStart = utcDate.atStartOfDay(ZoneOffset.UTC).toLocalDateTime();
-        LocalDateTime todayEnd= todayStart.plusDays(1);
+        LocalDate now = LocalDate.now();
+        LocalDateTime todayStart  = now.atStartOfDay();
+        LocalDateTime todayEnd  = todayStart.plusDays(1);
 
         return sumMacros(userId,todayStart,todayEnd);
     }
 
     public MacrosOfDayDto searchAndAddFood(String userId, String foodName, Integer quantity) {
+        
         //search for food in db
-
         NutritionSummary nutritionSummary =  nutritionRepo.findFirstByFoodNameIgnoreCase(foodName) ;
 
         if(nutritionSummary != null)
@@ -41,7 +41,6 @@ public class NutritionService {
             userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
             return getMacrosToday(userId);
         }
-
         //if not available ask ai
          //add to db
         NutritionSummary nutritionSummaryFromAi = Mapper.toNutritionSummaryEntity(aiService.getNutritionalDataFromAi(foodName,quantity).orElseThrow(() -> new RuntimeException("Exception: Failed to fetch nutrition from ai")));

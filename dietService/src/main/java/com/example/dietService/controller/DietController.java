@@ -30,10 +30,16 @@ public class DietController {
                 ));
     }
 
-    @GetMapping("/users/macros/today")
-    public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
-        String userId = jwt.getSubject();
+//    @GetMapping("/users/macros/today")
+//    public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
+//        String userId = jwt.getSubject();
+//
+//        return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
+//    }
+@GetMapping("/users/macros/today")
+public ResponseEntity<?> getMacrosOfTheDay(@AuthenticationPrincipal Jwt jwt){
+    String userId = jwt.getSubject();
 
-        return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
-    }
+    return ResponseEntity.ok( nutritionService.getMacrosToday(userId));
+}
 }
