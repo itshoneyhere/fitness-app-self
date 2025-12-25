@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="notificationService" />
       </profile>
       <profile name="Annotation profile for dietService" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -31,6 +32,7 @@
       <module name="dietService" options="-parameters" />
       <module name="eurekaServer" options="-parameters" />
       <module name="gatewayService" options="-parameters" />
+      <module name="notificationService" options="-parameters" />
       <module name="userServer" options="-parameters" />
     </option>
   </component>
