@@ -1,0 +1,21 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: notificationService
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: honey.kaustubh@gmail.com
+    password: ${gmail_smtp_pass}
+
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
