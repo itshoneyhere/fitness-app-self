@@ -38,8 +38,9 @@ public class NutritionService {
             userDietRepo.save(Mapper.toUserDiet(nutritionSummary,userId));
             return getMacrosToday(userId);
         }
+
         //if not available ask Ai
-         //add to db
+        //add to db
         NutritionSummary nutritionSummaryFromAi = Mapper.toNutritionSummaryEntity(aiService.getNutritionalDataFromAi(foodName,quantity).orElseThrow(() -> new RuntimeException("Exception: Failed to fetch nutrition from ai")));
 
         //add food to user diet

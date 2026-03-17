@@ -10,6 +10,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Entity
@@ -23,16 +24,23 @@ public class ActivityRecords {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long activityId;
 
+    @Column(nullable = false)
     private String userId;
 
-    private String activity ;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ActivityType activity ;
 
-    private Integer moveMinutes;
+    private Integer minutes;
 
     private Integer calorieBurned;
 
+    private Integer stepCount;
+
+    private LocalDateTime startTime;
+
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private Map<String, Object> activityDetails;
+    private Map<String, Object> details;
 
 }

@@ -41,7 +41,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="eurekaServer" target="25" />
-      <module name="notificationService" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

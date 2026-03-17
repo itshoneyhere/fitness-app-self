@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8099
 
 spring:
   application:
@@ -18,4 +18,9 @@ spring:
           starttls:
             enable: true
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 

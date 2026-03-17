@@ -4,7 +4,9 @@ import com.example.activityService.dto.RequestDto;
 import com.example.activityService.dto.ResponseDto;
 import com.example.activityService.mapper.Mapper;
 import com.example.activityService.service.ActivityService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -37,7 +39,7 @@ public class ActivityController {
 
 
     @PostMapping
-    public ResponseEntity<ResponseDto> createActivity(@RequestBody RequestDto requestDto,
+    public ResponseEntity<ResponseDto> createActivity(@RequestBody @Valid RequestDto requestDto,
                                                       @AuthenticationPrincipal Jwt jwt)
     {
         String userId = jwt.getSubject();

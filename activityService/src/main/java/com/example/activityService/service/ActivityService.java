@@ -6,6 +6,7 @@ import com.example.activityService.model.ActivityRecords;
 import com.example.activityService.repo.ActivityRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,10 +20,12 @@ public class ActivityService {
         return  activityRepo.findAllByUserId(userId);
     }
 
+    @Transactional
     public ActivityRecords createActivity(String userId, RequestDto requestDto) {
         ActivityRecords activityRecords = Mapper.fromRequest(requestDto);
         activityRecords.setUserId(userId);
-        return activityRepo.save(activityRecords);
+        activityRepo.save(activityRecords);
+
     }
 
     public ActivityRecords getLastActivityOfUser(String userId) {
