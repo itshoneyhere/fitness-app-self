@@ -31,7 +31,6 @@ spring:
     username: guest
     password: guest
 
-
 server:
   port: 8088
 

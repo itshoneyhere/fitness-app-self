@@ -1,10 +1,10 @@
 package com.example.dietService.controller;
 
 import com.example.dietService.dto.AddFoodRequestDto;
-import com.example.dietService.dto.event.NotificationEvent;
+import com.example.dietService.dto.EmailEvent;
 import com.example.dietService.service.ActivityClient;
 import com.example.dietService.service.NutritionService;
-import com.example.dietService.service.RabbitMqNotification;
+import com.example.dietService.service.rabbitmq.NotificationPublisher;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.units.qual.N;
@@ -21,7 +21,7 @@ public class DietController {
 
     private final NutritionService nutritionService;
     private final ActivityClient activityClient;
-    private final RabbitMqNotification rabbitMqNotification;
+    private final NotificationPublisher notificationPublisher;
 
     @PostMapping("/users/add/food")
     public ResponseEntity<?> addUsersMeal(@RequestBody @Valid AddFoodRequestDto addFoodRequestDto,
@@ -49,15 +49,14 @@ public class DietController {
         return ResponseEntity.ok(activityClient.getLatestActivity(jwt.getTokenValue()));
     }
 
-    @GetMapping("/sendDietReport")
-    public ResponseEntity<?> sendDietEmail(@AuthenticationPrincipal Jwt jwt,
-                                           @RequestParam String message) {
-
-        String userId = jwt.getSubject();
-
-        NotificationEvent notificationEvent = new NotificationEvent(userId,message);
-        rabbitMqNotification.sendNotification(notificationEvent);
-        return ResponseEntity.accepted().body("Success");
+    @GetMapping("/test/rabbit")
+    public ResponseEntity<?> testRabbitMq(@RequestParam("body") String body, @AuthenticationPrincipal Jwt jwt) {
+        EmailEvent event = EmailEvent.builder()
+                .to("honey.gemini01@gmail.com")
+                .subject("test mail")
+                .body(body).build();
+        notificationPublisher.sendEmailNotification(event);
+        return ResponseEntity.ok("done");
     }
 
 }

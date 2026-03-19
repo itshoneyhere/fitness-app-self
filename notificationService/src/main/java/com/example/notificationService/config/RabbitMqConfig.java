@@ -1,18 +1,17 @@
-package com.example.dietService.config;
+package com.example.notificationService.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.rabbitmq.client.AMQP;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.JacksonJsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import tools.jackson.databind.ObjectMapper;
 
 @Configuration
 public class RabbitMqConfig {
@@ -25,18 +24,13 @@ public class RabbitMqConfig {
     @Bean
     public TopicExchange exchange()
     {
-        return new TopicExchange(EXCHANGE);
+        return new TopicExchange(EXCHANGE,true,false);
     }
 
     @Bean
     public Queue queue()
     {
         return new Queue(QUEUE,true);
-    }
-
-    public String getROUTING_KEY()
-    {
-        return ROUTING_KEY;
     }
 
     @Bean
@@ -49,30 +43,22 @@ public class RabbitMqConfig {
     }
 
     @Bean
-    public ObjectMapper objectMapper() {
-        return JsonMapper.builder()
-                .addModule(new JavaTimeModule())
-                .findAndAddModules()
-                .build();
-    }
-
-    @Bean
     public MessageConverter jsonMessageConverter() {
         return new JacksonJsonMessageConverter();
     }
 
-
     @Bean
-    public RabbitTemplate rabbitTemplate(
+    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             ConnectionFactory connectionFactory,
             MessageConverter messageConverter) {
 
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(messageConverter);
-        return template;
+        SimpleRabbitListenerContainerFactory factory =
+                new SimpleRabbitListenerContainerFactory();
+
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(messageConverter);
+        return factory;
     }
-
-
 
 
 }
